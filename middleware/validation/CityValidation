@@ -1,0 +1,10 @@
+const Joi = require('@hapi/joi');
+
+const cityValidation = Joi.object({
+    city: Joi.string()
+        .alphanum()
+        .pattern(/^[A-Z][a-z]+$/)
+        .max(30)
+        .required(),
+});
+module.exports = cityValidation;

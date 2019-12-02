@@ -1,22 +1,16 @@
 const User = require('../models/UserModel');
 
 const add = async function (body) {
-    const user = await new User(body);
-    user.save(function (err) {
-        if (err) return console.error(err);
-    });
-    return {user};
+    const user = new User(body);
+    return await user.save();
 }
 
 const getAll =  async function(){
-    return await User.find(function (err, users) {
-        if (err) return console.error(err);
-        return users;
-    })
+    return await User.find();
 }
 
-const get =  function(id){
-    return  User.findById(id);
+const get = async function(id){
+    return await User.findById(id);
 }
 
 const update =  function(id,body){
@@ -45,6 +39,20 @@ const getCity = async function(id){
     return result
 }
 
+const loginUser = async function (login,password){
+    const user = await User.findByCredentials(login, password);
+    const token = await user.generateAuthToken();
+    return 'Вы авторизированы! Ваш токен: ' + token;
+}
+
+const logoutUser = async function(req){
+    req.user.tokens = req.user.tokens.filter((token) => {
+        return token.token !== req.token
+
+    })
+    await req.user.save()
+    return 'Вы вышли из учетной записи '+req.user.login;
+}
 
 module.exports = {
     add,
@@ -52,5 +60,7 @@ module.exports = {
     update,
     del,
     getAll,
-    getCity
+    getCity,
+    loginUser,
+    logoutUser
 }

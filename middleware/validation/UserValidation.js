@@ -13,6 +13,14 @@ const userValidation = Joi.object({
         .max(30)
         .required(),
     cityID: Joi.string()
+        .required(),
+    login: Joi.string()
+        .alphanum()
+        .min(5)
+        .max(20)
+        .required(),
+    password: Joi.string()
+        .min(4)
         .required()
 });
  module.exports = userValidation;

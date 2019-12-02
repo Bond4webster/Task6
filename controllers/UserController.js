@@ -3,8 +3,7 @@ class UserController {
     constructor(){}
     addUser = async (req, res) => {
         try {
-            const body = req.body;
-            const result = await service.add(body);
+            const result = await service.add(req.body);
             res.status(201).send(result);
         } catch (e) {
             res.status(400).send({error:e.message});
@@ -12,8 +11,7 @@ class UserController {
     }
     deleteUser = async (req, res) => {
         try {
-            const id = req.params.id;
-            const result = await service.del(id);
+            const result = await service.del(req.params.id);
             res.status(201).send(result);
         } catch (e) {
             res.status(400).send({error: e.message});
@@ -21,9 +19,7 @@ class UserController {
     }
     updateUser = async (req, res) => {
         try {
-            const id = req.params.id;
-            const body = req.body;
-            const result = await service.update(id,body);
+            const result = await service.update(req.params.id,req.body);
             res.status(201).send(result);
         } catch (e) {
             res.status(400).send({error: e.message});
@@ -31,8 +27,7 @@ class UserController {
     }
     getUser = async (req, res) => {
         try {
-            const id = req.params.id;
-            const result = await service.get(id);
+            const result = await service.get(req.params.id);
             res.send(result);
         } catch (e) {
             res.status(400).send({error:e.message});
@@ -48,11 +43,26 @@ class UserController {
     }
     getUserWithCity = async (req, res) => {
         try {
-            const id = req.params.id;
-            const result = await service.getCity(id)
-            res.send(result)
+            const result = await service.getCity(req.params.id);
+            res.send(result);
         } catch (e) {
-            res.status(400).send({error:e.message})
+            res.status(400).send({error:e.message});
+        }
+    }
+    loginUser = async (req, res) => {
+        try {
+            const result = await service.loginUser(req.body.login,req.body.password);
+            res.status(201).send(result);
+        } catch (e) {
+            res.status(400).send({error: e.message})
+        }
+    }
+    logoutUser = async (req, res) => {
+        try {
+            const result = await service.logoutUser(req);
+            res.status(201).send(result);
+        } catch (e) {
+            res.status(400).send({error: e.message})
         }
     }
 }
